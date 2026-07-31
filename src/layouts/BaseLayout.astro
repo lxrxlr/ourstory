@@ -4,7 +4,22 @@ import { ClientRouter } from "astro:transitions";
 const {
   title = "Our Story",
   description = "A handwritten memorial site built with Astro.",
+  /*
+   * ============================================================
+   *  🔧 OG 开放图谱参数 — 按需替换以下默认值
+   * ============================================================
+   */
+  // 1️⃣ og:image — 替换为你的 OG 预览图完整 URL（推荐 1200×630 px, <300KB）
+  ogImage = "https://story.lxrme.com/assets/og-image.jpg",
+  // 2️⃣ og:type — 首页用 "website"，文章/详情页用 "article"
+  ogType = "website",
 } = Astro.props;
+
+/*
+ * 自动拼接当前页面的完整 URL。
+ * 域名来自 astro.config.mjs 中的 site 字段，无需手动替换。
+ */
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!doctype html>
@@ -22,6 +37,52 @@ const {
       crossorigin
     />
     <title>{title}</title>
+
+    <!--
+    ============================================================
+     Open Graph / 开放图谱  &  微信分享预览卡片
+    ============================================================
+    微信抓取优先级：og:title > title > 页面正文推断
+                    og:description > meta description > 正文前几段
+                    og:image  > 页面内第一张大图（≥300×300px）
+    ============================================================
+    -->
+    <!-- ✅ og:title — 分享卡片标题（16-20 字最佳，勿超过 30 字） -->
+    <meta property="og:title" content={title} />
+    <!-- ✅ og:description — 分享卡片描述（30-50 字最佳） -->
+    <meta property="og:description" content={description} />
+    <!-- ✅ og:image — 分享卡片图片，替换上面的 ogImage 变量 -->
+    <meta property="og:image" content={ogImage} />
+    <!-- ✅ og:image:width / og:image:height — 帮助微信快速解析 -->
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <!-- ✅ og:url — 当前页面完整地址 -->
+    <meta property="og:url" content={canonicalUrl} />
+    <!-- ✅ og:type — 页面类型 -->
+    <meta property="og:type" content={ogType} />
+    <!-- ✅ og:site_name — 站点名称 -->
+    <meta property="og:site_name" content="Our Story" />
+    <!-- ✅ og:locale — 语言区域（中文） -->
+    <meta property="og:locale" content="zh_CN" />
+
+    <!-- Twitter Card（微信在部分场景也会参考） -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!--
+    ============================================================
+     微信 JS-SDK 兼容（可选，进一步优化微信内分享体验）
+     如需使用，请先开通微信公众号并配置 JS 安全域名。
+     不开通也不影响 OG 标签的抓取效果。
+    ============================================================
+    -->
+    <!-- 微信网页授权：itemprop 系列，微信爬虫会读取作为备用 -->
+    <meta itemprop="name" content={title} />
+    <meta itemprop="description" content={description} />
+    <meta itemprop="image" content={ogImage} />
+
     <ClientRouter fallback="animate" />
     <script is:inline>
       // 首次加载时立即在 <html> 上标记骨架屏状态，避免字体就绪前露出文字
