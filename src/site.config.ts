@@ -1,13 +1,13 @@
 const dayMs = 24 * 60 * 60 * 1000;
 
 export const siteConfig = {
-  copyright: "© 2026 zhlyxh.com All rights reserved.",
+  copyright: "© 2026 story.lxrme.com All rights reserved.",
   heroMedia: {
-    image: "/assets/photos/2026_06_17_17_49_59_IMG_9752.JPG",
-    caption: "2026.6.17"
+    image: "/assets/photos/20260712/IMG_20260712_142937.jpg",
+    caption: "2026.7.12"
   },
   relationship: {
-    startDate: "2025-9-12",
+    startDate: "2025-5-8",
   },
 } as const;
 
