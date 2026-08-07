@@ -3,7 +3,7 @@ const dayMs = 24 * 60 * 60 * 1000;
 export const siteConfig = {
   copyright: "© 2026 story.lxrme.com All rights reserved.",
   heroMedia: {
-    image: "/assets/photos/20260712/IMG_20260712_142937.jpg",
+    image: "/assets/photos/20260712/2c02da20403a42592eb3d9032c9d6082.jpg",
     caption: "2026.7.12"
   },
   relationship: {
